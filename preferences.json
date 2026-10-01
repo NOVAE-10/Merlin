@@ -1,0 +1,18 @@
+{
+  "preferredMood": "balanced",
+  "foodBudget": "medium",
+  "distance": "nearby",
+  "travelStyle": "balanced",
+  "distancePreference": "nearby",
+  "notifications": true,
+  "outingSearch": {
+    "activities": [
+      "nightlife"
+    ],
+    "location": "bengaluru",
+    "budgetRupees": 3100,
+    "companions": "friends",
+    "radiusKm": 5,
+    "transport": "any"
+  }
+}

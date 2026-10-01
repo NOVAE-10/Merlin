@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Merlin | Local Place Finder</title>
+    <meta name="description" content="Find places through conversation and open live map results with Merlin." />
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="merlin-app-shell">
+      <aside class="sidebar">
+        <div class="sidebar-brand">
+          <div class="cat-logo" role="img" aria-label="Merlin, a seated calico cat">
+            <svg viewBox="0 0 100 112" aria-hidden="true">
+              <path d="M68 89c17 5 27-4 26-16-1-8-6-12-12-10-5 2-6 7-3 11" fill="none" stroke="#d8cbbd" stroke-width="14" stroke-linecap="round"/>
+              <path d="M68 89c17 5 27-4 26-16-1-8-6-12-12-10-5 2-6 7-3 11" fill="none" stroke="#f8f3ea" stroke-width="10" stroke-linecap="round"/>
+              <path d="M81 65c5-3 10 1 12 6 1 4 0 8-2 10-5-2-8-6-10-10Z" fill="#252321"/>
+              <path d="M29 56c-10 8-14 23-13 40 1 9 9 12 21 12h26c14 0 22-5 21-14-1-16-6-31-16-38-6-4-13-6-20-6s-14 2-19 6Z" fill="#f8f3ea" stroke="#d8cbbd" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M27 63c-8 8-9 19-8 29 7 2 15-1 22-8l4-18Z" fill="#f28d3b"/>
+              <path d="M62 59c11 5 17 18 18 32-7 4-15 2-22-5l-4-21Z" fill="#252321"/>
+              <path d="M34 96c5 3 10 3 16 1 5 2 11 2 16-1l3 10H31Z" fill="#f8f3ea" stroke="#d8cbbd" stroke-width="1.5" stroke-linejoin="round"/>
+              <path d="M20 26 17 5q0-4 4-2l20 15q9-4 18 0L79 3q4-2 4 2l-3 22c9 9 10 22 5 33-6 12-19 18-35 18s-29-6-35-18c-5-11-4-25 5-34Z" fill="#f8f3ea" stroke="#d8cbbd" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="m21 13 15 10q-6 6-7 15L16 43q-4-8-1-17Z" fill="#f28d3b"/>
+              <path d="m79 13-15 10q6 6 7 15l13 5q4-8 1-17Z" fill="#252321"/>
+              <path d="m23 14 11 8-9 4Z" fill="#d96f53"/>
+              <path d="m77 14-11 8 9 4Z" fill="#d96f53"/>
+              <path d="M29 43q7-7 14 0-7 8-14 0Zm28 0q7-7 14 0-7 8-14 0Z" fill="#fff"/>
+              <ellipse cx="36" cy="43" rx="2.3" ry="4" fill="#80603b"/>
+              <ellipse cx="64" cy="43" rx="2.3" ry="4" fill="#80603b"/>
+              <path d="M42 55q8-6 16 0l-8 6Z" fill="#d77e7a" stroke="#bd6765" stroke-width="1" stroke-linejoin="round"/>
+              <path d="M50 61v4m0 0q-5 5-9 1m9-1q5 5 9 1m-19-9L15 52m25 8-26 4m45-11 25-1m-25 8 26 4" fill="none" stroke="#8f8177" stroke-width="1.4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div>
+            <div class="brand-name">Merlin</div>
+            <div class="brand-subtitle">Local place finder</div>
+          </div>
+        </div>
+
+        <nav class="sidebar-nav" id="sideNav">
+          <button type="button" class="nav-item active" data-page="frequent">
+            <span class="nav-icon">📍</span>
+            <span>Frequent Places</span>
+          </button>
+          <button type="button" class="nav-item" data-page="talk">
+            <span class="nav-icon">🐈</span>
+            <span>Talk with Merlin</span>
+          </button>
+          <button type="button" class="nav-item" data-page="plan">
+            <span class="nav-icon">🧭</span>
+            <span>Plan an Outing</span>
+          </button>
+          <button type="button" class="nav-item" data-page="trip">
+            <span class="nav-icon">✈️</span>
+            <span>Plan Your Next Trip</span>
+          </button>
+          <button type="button" class="nav-item" data-page="settings">
+            <span class="nav-icon">⚙️</span>
+            <span>Settings</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-note">
+          <div class="note-label">Merlin guidance</div>
+          <p>Ask for a food stop, a quiet park, a shopping run, or a full multi-day plan.</p>
+        </div>
+      </aside>
+
+      <main class="main-panel">
+        <header class="workspace-header">
+          <div>
+            <div class="eyebrow">Merlin dashboard</div>
+            <h1 id="pageTitle">Frequent Places</h1>
+          </div>
+          <button type="button" class="accent-button" id="askMerlinHeader">Ask Merlin</button>
+        </header>
+
+        <section class="page-section active" data-page="frequent">
+          <div class="hero-card">
+            <div class="hero-copy">
+              <div class="eyebrow orange">My Frequent Places</div>
+              <p class="hero-tagline">Good things are closer when you go together.</p>
+              <h2>Keep your go-to stops close at hand.</h2>
+              <p>Save the places you visit most and compare practical, budget-friendly ways to get there.</p>
+            </div>
+            <div class="mini-cat-art" role="img" aria-label="Merlin, a calico cat sitting in a leafy garden">
+              <svg viewBox="0 0 220 180" aria-hidden="true">
+                <circle cx="169" cy="34" r="21" fill="#f5bb69" opacity="0.8"/>
+                <path d="M0 145q42-31 83-6t80-3q31-15 57-5v49H0Z" fill="#526d48" opacity="0.72"/>
+                <path d="M0 158q49-19 95 2t125-7v27H0Z" fill="#283f31"/>
+                <path d="M19 142q5-30 18-46m-9 23q-18 0-21-13 14-4 21 13m2-13q-2-17 10-22 7 13-10 22m-4 28q-15-2-20-13 14-6 20 13m9-17q3-15 16-17 3 14-16 17" fill="#91a878" stroke="#526d48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M199 145q-3-25-13-39m7 17q15-2 18-13-12-5-18 13m-1-11q0-14-11-19-6 11 11 19m5 29q13-3 17-13-12-6-17 13" fill="#91a878" stroke="#526d48" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M139 147c26 13 43 4 41-14-1-10-8-15-15-11-6 3-5 10 0 13" fill="none" stroke="#d9cdbb" stroke-width="15" stroke-linecap="round"/>
+                <path d="M139 147c26 13 43 4 41-14-1-10-8-15-15-11-6 3-5 10 0 13" fill="none" stroke="#f8f3ea" stroke-width="11" stroke-linecap="round"/>
+                <path d="M168 122c6-4 11 1 12 7 1 4 0 7-3 10-5-3-8-7-9-12Z" fill="#252321"/>
+                <path d="M77 95c-10 10-13 28-11 55 1 11 10 16 23 16h45c14 0 21-6 20-17-1-22-6-42-17-53-8-7-19-10-31-10-12 0-22 3-29 9Z" fill="#f8f3ea" stroke="#d9cdbb" stroke-width="2.5" stroke-linejoin="round"/>
+                <path d="M73 105c-7 11-8 27-6 39 9 3 18-1 25-9l3-25Z" fill="#f28d3b"/>
+                <path d="M128 95c13 7 21 23 24 41-9 5-18 2-26-8l-5-26Z" fill="#252321"/>
+                <path d="M77 151c6 4 13 4 20 1 7 3 15 3 22-1l4 14H73Z" fill="#f8f3ea" stroke="#d9cdbb" stroke-width="1.7" stroke-linejoin="round"/>
+                <path d="M83 47 79 20q-1-5 4-2l21 16q10-5 21 0l20-16q5-3 4 3l-4 27c10 10 11 24 5 36-7 13-21 19-37 19S83 97 76 84c-6-12-4-27 7-37Z" fill="#f8f3ea" stroke="#d9cdbb" stroke-width="2.5" stroke-linejoin="round"/>
+                <path d="m83 28 16 10q-7 7-8 18l-14 5q-4-9-1-20Z" fill="#f28d3b"/>
+                <path d="m143 28-16 10q7 7 8 18l14 5q4-9 1-20Z" fill="#252321"/>
+                <path d="m85 29 12 8-10 5Z" fill="#d96f53"/>
+                <path d="m141 29-12 8 10 5Z" fill="#d96f53"/>
+                <path d="M91 62q8-8 16 0-8 8-16 0Zm24 0q8-8 16 0-8 8-16 0Z" fill="#fff"/>
+                <ellipse cx="99" cy="62" rx="2.5" ry="4" fill="#80603b"/>
+                <ellipse cx="123" cy="62" rx="2.5" ry="4" fill="#80603b"/>
+                <path d="M103 75q8-6 16 0l-8 6Z" fill="#d77e7a" stroke="#bd6765" stroke-width="1" stroke-linejoin="round"/>
+                <path d="M111 81v4m0 0q-5 5-9 1m9-1q5 5 9 1m-19-11-19-3m19 8-20 2m39-7 19-3m-19 8 20 2" fill="none" stroke="#8f8177" stroke-width="1.5" stroke-linecap="round"/>
+              </svg>
+            </div>
+          </div>
+
+          <div class="content-grid two-col">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Saved places</h3>
+                <span class="pill-tag">Up to 5</span>
+              </div>
+              <form id="placeForm" class="stacked-form">
+                <label class="field-group">
+                  <span>Place name</span>
+                  <input id="placeName" type="text" placeholder="Add a place you visit often" />
+                </label>
+                <button type="submit" class="primary-btn wide">Add place</button>
+              </form>
+              <div id="frequentList" class="list-stack"></div>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Merlin's Local Loop</h3>
+              </div>
+              <div class="context-box">
+                <p>Pick a mood and neighborhood for a themed shortlist of nearby ideas, ranked inside Merlin.</p>
+              </div>
+              <form id="localLoopForm" class="local-loop-form">
+                <label class="field-group">
+                  <span>Neighborhood or city</span>
+                  <input id="localLoopLocation" type="text" placeholder="Pune, Kyoto, or any destination" required />
+                </label>
+                <label class="field-group">
+                  <span>Today's mood</span>
+                  <select id="localLoopMood">
+                    <option value="slow">Chai and a stroll</option>
+                    <option value="culture">Heritage afternoon</option>
+                    <option value="family">Family day</option>
+                    <option value="sweet">Street-food evening</option>
+                  </select>
+                </label>
+                <button class="primary-btn wide" type="submit">Make my Local Loop</button>
+              </form>
+              <div id="localLoopResults" class="local-loop-results" aria-live="polite"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page-section" data-page="talk">
+          <div class="hero-card dark talk-hero">
+            <div class="hero-copy">
+              <div class="eyebrow orange">Talk with Merlin</div>
+              <h2>Where will Merlin take you today?</h2>
+              <p>Tell Merlin what you’d enjoy, your budget, who’s coming, and where to look.</p>
+            </div>
+            <div class="page-cat-scene" role="img" aria-label="A listening calico cat in a meadow">
+              <svg viewBox="0 0 200 140" aria-hidden="true"><use href="/cat-scenes.svg#cat-listening"/></svg>
+            </div>
+          </div>
+
+          <div class="content-grid talk-layout">
+            <form class="panel recommendation-form" id="placeFinderForm">
+              <div class="panel-header">
+                <h3>Tell Merlin about your outing</h3>
+              </div>
+              <fieldset class="activity-fieldset">
+                <legend>What would you like to do? Choose up to three.</legend>
+                <div class="activity-options">
+                  <label><input type="checkbox" name="activities" value="food" /><span>Street food, chai and cafes</span></label>
+                  <label><input type="checkbox" name="activities" value="nature" /><span>Parks and nature</span></label>
+                  <label><input type="checkbox" name="activities" value="culture" /><span>Culture and heritage</span></label>
+                  <label><input type="checkbox" name="activities" value="shopping" /><span>Shopping and bazaars</span></label>
+                  <label><input type="checkbox" name="activities" value="family" /><span>Family activities</span></label>
+                  <label><input type="checkbox" name="activities" value="active" /><span>Sports and fitness</span></label>
+                  <label><input type="checkbox" name="activities" value="quiet" /><span>Somewhere quiet</span></label>
+                  <label><input type="checkbox" name="activities" value="beach" /><span>Beaches and waterfront</span></label>
+                  <label><input type="checkbox" name="activities" value="nightlife" /><span>Nightlife</span></label>
+                  <label><input type="checkbox" name="activities" value="wellness" /><span>Spa and wellness</span></label>
+                </div>
+              </fieldset>
+              <label class="field-group">
+                <span>Where should Merlin look?</span>
+                <input id="searchLocation" name="location" type="text" placeholder="City, region, and country (e.g., Kyoto, Japan)" maxlength="160" required />
+              </label>
+              <div class="row-fields">
+                <label class="field-group">
+                  <span>Your budget?</span>
+                  <div class="budget-control">
+                    <input id="budgetRange" type="range" name="budgetLevel" min="0" max="49" step="1" value="14" />
+                    <output id="budgetOutput" for="budgetRange">₹3,100</output>
+                  </div>
+                  <div class="budget-range-labels"><span>₹300</span><span>₹5,100</span><span>₹10,000</span></div>
+                </label>
+                <label class="field-group">
+                  <span>Who are you going with?</span>
+                  <select name="companions">
+                    <option value="solo">Just me</option>
+                    <option value="date">A date</option>
+                    <option value="friends" selected>Friends</option>
+                    <option value="family">Family</option>
+                    <option value="kids">Family with kids</option>
+                  </select>
+                </label>
+                <label class="field-group">
+                  <span>How far would you go?</span>
+                  <select name="radiusKm">
+                    <option value="1">Within 1 km</option>
+                    <option value="3">Within 3 km</option>
+                    <option value="5">Within 5 km</option>
+                    <option value="10">Within 10 km</option>
+                    <option value="25">25 km</option>
+                    <option value="50" selected>As far as 50 km</option>
+                  </select>
+                </label>
+                <label class="field-group">
+                  <span>Getting there</span>
+                  <select name="transport">
+                    <option value="any" selected>Any way</option>
+                    <option value="walk">Walking</option>
+                    <option value="transit">Metro or bus</option>
+                    <option value="drive">Car, bike, or cab</option>
+                  </select>
+                </label>
+              </div>
+              <p class="recommendation-attribution">Merlin compares tagged fees with your INR budget. Map listings often omit current menu prices and entry fees.</p>
+              <p class="recommendation-status" id="recommendationStatus" role="status" aria-live="polite"></p>
+              <button type="submit" class="primary-btn wide" id="findPlacesButton">Find my places</button>
+            </form>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Your tailored suggestions</h3>
+              </div>
+              <div id="recommendationResults" class="recommendation-results" aria-live="polite">
+                <div class="recommendation-empty">Share your plans with Merlin to see nearby places picked for you.</div>
+              </div>
+              <div id="planContainer" class="plan-list-wrapper"></div>
+              <div class="margin-top">
+                <h4 class="subheading">Saved outings</h4>
+                <div id="outingList" class="list-stack compact"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page-section" data-page="plan">
+          <div class="hero-card compact">
+            <div class="hero-copy">
+              <div class="eyebrow orange">Plan an Outing</div>
+              <h2>Create a practical outing with multiple stops.</h2>
+            </div>
+            <div class="page-cat-scene" role="img" aria-label="A walking calico cat on a garden path">
+              <svg viewBox="0 0 200 140" aria-hidden="true"><use href="/cat-scenes.svg#cat-outing"/></svg>
+            </div>
+          </div>
+
+          <div class="content-grid two-col">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Outing planner</h3>
+              </div>
+              <form id="outingPlannerForm" class="planner-form">
+                <label class="field-group">
+                  <span>Where should Merlin search?</span>
+                  <input type="text" name="searchLocation" placeholder="City, region, and country" required />
+                </label>
+                <div class="row-fields">
+                  <label class="field-group">
+                    <span>Date</span>
+                    <input type="date" name="date" />
+                  </label>
+                </div>
+                <fieldset class="itinerary-stops">
+                  <legend>Destinations and reminder times</legend>
+                  <p class="recommendation-attribution">Pick a kind of place for each stop and set its reminder time.</p>
+                  <div class="itinerary-stop">
+                    <label class="field-group"><span>Destination 1</span><select name="stopActivity" required><option value="">Choose a place type</option><option value="food">Food, cafes, and street food</option><option value="nature">Parks and nature</option><option value="culture">Culture and heritage</option><option value="shopping">Shopping and markets</option><option value="family">Family activities</option><option value="active">Sports and fitness</option><option value="quiet">Somewhere quiet</option><option value="beach">Beaches and waterfront</option><option value="nightlife">Nightlife</option><option value="wellness">Spa and wellness</option></select></label>
+                    <label class="field-group"><span>Reminder time</span><input type="time" name="stopTime" value="10:00" required /></label>
+                  </div>
+                  <div class="itinerary-stop">
+                    <label class="field-group"><span>Destination 2</span><select name="stopActivity"><option value="">Skip this stop</option><option value="food">Food, cafes, and street food</option><option value="nature">Parks and nature</option><option value="culture">Culture and heritage</option><option value="shopping">Shopping and markets</option><option value="family">Family activities</option><option value="active">Sports and fitness</option><option value="quiet">Somewhere quiet</option><option value="beach">Beaches and waterfront</option><option value="nightlife">Nightlife</option><option value="wellness">Spa and wellness</option></select></label>
+                    <label class="field-group"><span>Reminder time</span><input type="time" name="stopTime" value="13:00" /></label>
+                  </div>
+                  <div class="itinerary-stop">
+                    <label class="field-group"><span>Destination 3</span><select name="stopActivity"><option value="">Skip this stop</option><option value="food">Food, cafes, and street food</option><option value="nature">Parks and nature</option><option value="culture">Culture and heritage</option><option value="shopping">Shopping and markets</option><option value="family">Family activities</option><option value="active">Sports and fitness</option><option value="quiet">Somewhere quiet</option><option value="beach">Beaches and waterfront</option><option value="nightlife">Nightlife</option><option value="wellness">Spa and wellness</option></select></label>
+                    <label class="field-group"><span>Reminder time</span><input type="time" name="stopTime" value="16:00" /></label>
+                  </div>
+                </fieldset>
+                <div class="row-fields">
+                  <label class="field-group">
+                    <span>People</span>
+                    <select name="people">
+                      <option value="Solo">Solo</option>
+                      <option value="Partner">With a partner</option>
+                      <option value="Friends" selected>Friends</option>
+                      <option value="Family">Family</option>
+                      <option value="Friends & family">Friends &amp; family</option>
+                      <option value="Group">Group</option>
+                    </select>
+                  </label>
+                  <label class="field-group">
+                    <span>Style</span>
+                    <select name="style">
+                      <option value="Balanced" selected>Balanced</option>
+                      <option value="Relaxed">Relaxed</option>
+                      <option value="Active">Active</option>
+                      <option value="Food-focused">Food-focused</option>
+                      <option value="Nature-focused">Nature-focused</option>
+                      <option value="Budget-friendly">Budget-friendly</option>
+                      <option value="Culture-focused">Culture-focused</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="row-fields">
+                  <label class="field-group">
+                    <span>Your budget?</span>
+                    <select name="budgetRupees" data-budget-select></select>
+                  </label>
+                  <label class="field-group">
+                    <span>Search within</span>
+                    <select name="radiusKm"><option value="1">1 km</option><option value="3">3 km</option><option value="5">5 km</option><option value="10">10 km</option><option value="25">25 km</option><option value="50" selected>As far as 50 km</option></select>
+                  </label>
+                  <label class="field-group">
+                    <span>Getting there</span>
+                    <select name="transport"><option value="any" selected>Any way</option><option value="walk">Walking</option><option value="transit">Public transit</option><option value="drive">Car or cab</option></select>
+                  </label>
+                </div>
+                <p class="recommendation-status" id="outingStatus" role="status" aria-live="polite"></p>
+                <button type="submit" class="primary-btn wide" id="outingSearchButton">Find outing places</button>
+              </form>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Nearby outing suggestions</h3>
+              </div>
+              <div id="outingPreview" class="summary-box">
+                <p>Tell Merlin what you’re planning to see real nearby places matched to your outing.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page-section" data-page="trip">
+          <div class="hero-card compact">
+            <div class="hero-copy">
+              <div class="eyebrow orange">Plan Your Next Trip</div>
+              <h2>Build a bigger day or multi-day adventure.</h2>
+              <p>Search for real places anywhere in the world, from nearby escapes to international trips.</p>
+            </div>
+            <div class="page-cat-scene" role="img" aria-label="A traveling calico cat among mountain trails">
+              <svg viewBox="0 0 200 140" aria-hidden="true"><use href="/cat-scenes.svg#cat-travel"/></svg>
+            </div>
+          </div>
+
+          <div class="content-grid two-col">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Trip planner</h3>
+              </div>
+              <form id="tripPlannerForm" class="planner-form">
+                <label class="field-group">
+                  <span>Trip name</span>
+                  <input type="text" name="tripName" value="Weekend getaway" list="tripNameOptions" />
+                  <datalist id="tripNameOptions"><option value="Weekend getaway"><option value="Family holiday"><option value="Solo trip"><option value="Business trip"><option value="Honeymoon"></datalist>
+                </label>
+                <label class="field-group">
+                  <span>Primary focus</span>
+                  <input type="text" name="focus" value="Relaxation and food" list="tripFocusOptions" />
+                  <datalist id="tripFocusOptions"><option value="Sightseeing and food"><option value="Nature and adventure"><option value="Culture and heritage"><option value="Relaxation and wellness"><option value="Shopping and markets"></datalist>
+                </label>
+                <label class="field-group">
+                  <span>Starting city or country</span>
+                  <input type="text" name="origin" placeholder="Where are you starting from?" list="worldDestinationOptions" required />
+                </label>
+                <label class="field-group">
+                  <span>Where are you travelling?</span>
+                  <input type="text" name="searchLocation" placeholder="Any destination worldwide, e.g. Kyoto, Japan" list="worldDestinationOptions" required />
+                  <datalist id="worldDestinationOptions"><option value="Goa, India"><option value="Bengaluru, India"><option value="Jaipur, India"><option value="Kyoto, Japan"><option value="Paris, France"><option value="Rome, Italy"><option value="Singapore"><option value="Dubai, UAE"><option value="London, United Kingdom"><option value="New York, United States"></datalist>
+                </label>
+                <label class="field-group">
+                  <span>Accommodation</span>
+                  <input type="text" name="stay" value="Hotel" list="stayOptions" />
+                  <datalist id="stayOptions"><option value="Hotel"><option value="Hostel"><option value="Resort"><option value="Guest house"><option value="Homestay"><option value="Apartment"></datalist>
+                </label>
+                <fieldset class="activity-fieldset">
+                  <legend>What would you like to do? Choose up to three.</legend>
+                  <div class="activity-options">
+                    <label><input type="checkbox" name="activities" value="food" checked /><span>Food and cafes</span></label>
+                    <label><input type="checkbox" name="activities" value="nature" /><span>Parks and nature</span></label>
+                    <label><input type="checkbox" name="activities" value="culture" /><span>Culture and heritage</span></label>
+                    <label><input type="checkbox" name="activities" value="shopping" /><span>Shopping and markets</span></label>
+                    <label><input type="checkbox" name="activities" value="family" /><span>Family activities</span></label>
+                    <label><input type="checkbox" name="activities" value="beach" /><span>Beaches and waterfront</span></label>
+                    <label><input type="checkbox" name="activities" value="nightlife" /><span>Nightlife</span></label>
+                    <label><input type="checkbox" name="activities" value="wellness" /><span>Spa and wellness</span></label>
+                    <label><input type="checkbox" name="activities" value="stay" checked /><span>Hotels and stays</span></label>
+                  </div>
+                </fieldset>
+                <div class="trip-budget-control">
+                  <label class="field-group" for="tripBudgetSlider"><span>Total trip budget</span></label>
+                  <input id="tripBudgetSlider" type="range" min="0" max="10000000" step="100" value="50000" aria-label="Total trip budget slider" />
+                  <label class="trip-budget-input" for="tripBudgetInput"><span>₹</span><input id="tripBudgetInput" type="number" name="budgetRupees" min="0" step="100" value="50000" aria-label="Type your total budget in rupees" /></label>
+                  <p class="recommendation-attribution">Type any amount; the slider is a quick guide. Costs are estimates, not live fares.</p>
+                </div>
+                <div class="row-fields">
+                  <label class="field-group"><span>Travelers</span><input type="number" name="partySize" min="1" max="50" value="2" /></label>
+                  <label class="field-group"><span>Trip length (days)</span><input type="number" name="tripDays" min="1" max="365" value="3" /></label>
+                  <label class="field-group"><span>Who is coming?</span><select name="companions"><option value="solo">Solo</option><option value="date">A date</option><option value="friends" selected>Friends</option><option value="family">Family</option><option value="kids">Family with kids</option></select></label>
+                  <label class="field-group"><span>Search within</span><select name="radiusKm"><option value="1">1 km</option><option value="3">3 km</option><option value="5">5 km</option><option value="10">10 km</option><option value="25">25 km</option><option value="50" selected>As far as 50 km</option></select></label>
+                  <label class="field-group"><span>Getting there</span><select name="transport"><option value="any" selected>Any way</option><option value="walk">Walking</option><option value="transit">Public transit</option><option value="drive">Car or cab</option></select></label>
+                </div>
+                <p class="recommendation-status" id="tripStatus" role="status" aria-live="polite"></p>
+                <button type="submit" class="primary-btn wide" id="tripSearchButton">Find trip places</button>
+              </form>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Places for your trip</h3>
+              </div>
+              <div id="tripPreview" class="summary-box">
+                <p>Choose a destination and activities to see real places for your trip.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="page-section" data-page="settings">
+          <div class="hero-card compact">
+            <div class="hero-copy">
+              <div class="eyebrow orange">Settings</div>
+              <h2>Adjust your Merlin preferences.</h2>
+            </div>
+            <div class="page-cat-scene" role="img" aria-label="A sleepy calico cat beside a potted plant">
+              <svg viewBox="0 0 200 140" aria-hidden="true"><use href="/cat-scenes.svg#cat-settings"/></svg>
+            </div>
+          </div>
+
+          <div class="panel sign-in-panel">
+            <div class="panel-header">
+              <h3>Sign-in options</h3>
+              <span class="pill-tag">Setup required</span>
+            </div>
+            <p class="sign-in-status" id="signInStatus">Connect an authentication provider to enable account sign-in.</p>
+            <div class="sign-in-options" aria-describedby="signInStatus">
+              <button type="button" class="sign-in-option" disabled>
+                <span class="sign-in-provider">Email</span>
+                <span class="sign-in-state">Not configured</span>
+              </button>
+              <button type="button" class="sign-in-option" disabled>
+                <span class="sign-in-provider">Google</span>
+                <span class="sign-in-state">Not configured</span>
+              </button>
+              <button type="button" class="sign-in-option" disabled>
+                <span class="sign-in-provider">Apple</span>
+                <span class="sign-in-state">Not configured</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="content-grid two-col">
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Profile</h3>
+              </div>
+              <form id="settingsForm" class="planner-form">
+                <label class="field-group">
+                  <span>Travel style</span>
+                  <select id="travelStyle">
+                    <option value="balanced">Balanced</option>
+                    <option value="active">Active</option>
+                    <option value="relaxed">Relaxed</option>
+                    <option value="food-focused">Food-focused</option>
+                  </select>
+                </label>
+                <label class="field-group">
+                  <span>Food budget</span>
+                  <select id="foodBudget">
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                  </select>
+                </label>
+                <label class="field-group">
+                  <span>Distance preference</span>
+                  <select id="distancePreference">
+                    <option value="nearby" selected>Nearby</option>
+                    <option value="moderate">Moderate</option>
+                    <option value="any">Any</option>
+                  </select>
+                </label>
+                <label class="field-group checkbox-row">
+                  <input type="checkbox" id="notifications" checked />
+                  <span>Notifications</span>
+                </label>
+                <button type="submit" class="primary-btn wide">Save settings</button>
+              </form>
+            </div>
+
+            <div class="panel">
+              <div class="panel-header">
+                <h3>Merlin help</h3>
+              </div>
+              <div class="context-box">
+                <p>“I can help you personalize your trip style, food preferences, accessibility needs, and how Merlin plans your day.”</p>
+              </div>
+              <div class="small-actions">
+                <button class="ghost-btn" type="button" data-context-message="How should Merlin plan my outings based on my preferences?">Personalize Merlin</button>
+                <button class="ghost-btn" type="button" data-context-message="What settings should I adjust for a relaxed, low-travel plan?">Adjust travel style</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <button class="floating-merlin" id="merlinFab" type="button" aria-label="Open Merlin companion">
+      <span class="fab-icon">🐈</span>
+      <span>Merlin</span>
+    </button>
+
+    <aside class="merlin-drawer" id="merlinDrawer" aria-live="polite">
+      <div class="drawer-header">
+        <div class="drawer-title">
+          <span class="drawer-icon">🐈</span>
+          <strong>Merlin</strong>
+        </div>
+        <button class="close-btn" type="button" id="closeMerlinDrawer">×</button>
+      </div>
+      <div class="drawer-body">
+        <div id="drawerChat" class="drawer-chat"></div>
+        <div class="drawer-composer">
+          <textarea id="drawerInput" rows="2" placeholder="Ask Merlin about this page..."></textarea>
+          <button type="button" class="primary-btn" id="drawerSend">Send</button>
+        </div>
+      </div>
+    </aside>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
