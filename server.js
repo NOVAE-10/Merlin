@@ -2,9 +2,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const {
-  default: express
-} = await import('express');
+const { default: express } = await import('express');
+const path = await import('node:path');
+const { fileURLToPath } = await import('node:url');
 
 const {
   getFrequentPlaces,
@@ -20,21 +20,14 @@ const {
   searchNearbyPlaces
 } = await import('./lib/places.js');
 
-import path from 'node:path';
-import { fileURLToPath } from 'node:url';
-
-const __filename =
-  fileURLToPath(import.meta.url);
-
-const __dirname =
-  path.dirname(__filename);
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
-const PORT =
-  Number(
-    process.env.PORT || 3000
-  );
+const PORT = Number(
+  process.env.PORT || 3000
+);
 
 app.use(
   express.json({
@@ -42,16 +35,13 @@ app.use(
   })
 );
 
-const staticRoot =
-  path.join(
-    __dirname,
-    'public'
-  );
+const staticRoot = path.join(
+  __dirname,
+  'public'
+);
 
 app.use(
-  express.static(
-    staticRoot
-  )
+  express.static(staticRoot)
 );
 
 /* ---------------- HEALTH ---------------- */
@@ -62,7 +52,11 @@ app.get(
     res.json({
       ok: true,
       app: 'Merlin',
-      status: 'ready'
+      status: 'ready',
+      geoapifyConfigured:
+        Boolean(
+          process.env.GEOAPIFY_API_KEY
+        )
     });
   }
 );
@@ -76,9 +70,7 @@ app.get(
       const places =
         await getFrequentPlaces();
 
-      res.json({
-        places
-      });
+      res.json({ places });
     } catch (error) {
       console.error(
         'Frequent places load error:',
@@ -100,15 +92,16 @@ app.post(
   '/api/frequent-places',
   async (req, res) => {
     try {
-      const {
-        places
-      } = req.body || {};
+      const places =
+        Array.isArray(
+          req.body?.places
+        )
+          ? req.body.places
+          : [];
 
       const saved =
         await saveFrequentPlaces(
-          Array.isArray(places)
-            ? places
-            : []
+          places
         );
 
       res.json({
@@ -140,9 +133,7 @@ app.get(
       const outings =
         await getOutings();
 
-      res.json({
-        outings
-      });
+      res.json({ outings });
     } catch (error) {
       console.error(
         'Outings load error:',
@@ -198,9 +189,7 @@ app.delete(
           req.params.id
         );
 
-      res.json({
-        outings
-      });
+      res.json({ outings });
     } catch (error) {
       console.error(
         'Outing delete error:',
@@ -284,7 +273,24 @@ async function sendPlaceSuggestions(
 ) {
   try {
     console.log(
-      'Merlin place search request received.'
+      'Merlin place search request:',
+      JSON.stringify({
+        activities:
+          preferences?.activities,
+        location:
+          preferences?.location,
+        radiusKm:
+          preferences?.radiusKm,
+        hasCoordinates:
+          Boolean(
+            preferences?.latitude &&
+            preferences?.longitude
+          ),
+        geoapifyConfigured:
+          Boolean(
+            process.env.GEOAPIFY_API_KEY
+          )
+      })
     );
 
     const result =
@@ -293,9 +299,9 @@ async function sendPlaceSuggestions(
       );
 
     console.log(
-      `Merlin place search completed: ${
+      `Merlin search returned ${
         result?.suggestions?.length || 0
-      } suggestions.`
+      } places.`
     );
 
     res.json(result);
@@ -315,8 +321,6 @@ async function sendPlaceSuggestions(
   }
 }
 
-/* GET place search */
-
 app.get(
   '/api/places/search',
   async (req, res) => {
@@ -328,6 +332,10 @@ app.get(
         ''
       )
         .split(',')
+        .map(
+          (value) =>
+            value.trim()
+        )
         .filter(Boolean);
 
     await sendPlaceSuggestions(
@@ -340,18 +348,13 @@ app.get(
   }
 );
 
-/* POST place search */
-
 app.post(
   '/api/places/search',
   async (req, res) => {
-    const preferences =
-      req.body?.preferences ||
-      req.body ||
-      {};
-
     await sendPlaceSuggestions(
-      preferences,
+      req.body?.preferences ||
+        req.body ||
+        {},
       res
     );
   }
@@ -369,11 +372,6 @@ app.post(
       preferences
     } = req.body || {};
 
-    /*
-     * If the frontend sends structured
-     * preferences, use the real place
-     * search engine.
-     */
     if (preferences) {
       try {
         const result =
@@ -383,21 +381,18 @@ app.post(
 
         return res.json({
           ...result,
-
           message:
             `Merlin found ${
               result.suggestions.length
             } nearby ideas around ${
               result.location
             }.`,
-
           history,
-
           source: 'local'
         });
       } catch (error) {
         console.error(
-          'Merlin chat place-search error:',
+          'Merlin chat search error:',
           error
         );
 
@@ -426,17 +421,14 @@ app.post(
     return res.json({
       message:
         'Merlin uses your activity, budget, group, distance, and area to rank nearby suggestions. Choose those preferences on the Talk with Merlin page to see places here.',
-
       history,
-
       source: 'local',
-
       context
     });
   }
 );
 
-/* ---------------- FRONTEND FALLBACK ---------------- */
+/* ---------------- FRONTEND ---------------- */
 
 app.get(
   '*',
@@ -450,7 +442,7 @@ app.get(
   }
 );
 
-/* ---------------- START SERVER ---------------- */
+/* ---------------- START ---------------- */
 
 app.listen(
   PORT,
