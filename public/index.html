@@ -173,6 +173,7 @@
               <div class="panel-header">
                 <h3>Tell Merlin about your outing</h3>
               </div>
+
               <fieldset class="activity-fieldset">
                 <legend>What would you like to do? Choose up to three.</legend>
                 <div class="activity-options">
@@ -188,10 +189,38 @@
                   <label><input type="checkbox" name="activities" value="wellness" /><span>Spa and wellness</span></label>
                 </div>
               </fieldset>
-              <label class="field-group">
+
+              <!-- UPDATED LOCATION SECTION -->
+              <div class="field-group">
                 <span>Where should Merlin look?</span>
-                <input id="searchLocation" name="location" type="text" placeholder="City, region, and country (e.g., Kyoto, Japan)" maxlength="160" required />
-              </label>
+
+                <div class="location-choice-group">
+                  <label class="location-choice">
+                    <input type="radio" name="locationMode" value="live" />
+                    <span>📍 Use my live location</span>
+                  </label>
+
+                  <label class="location-choice">
+                    <input type="radio" name="locationMode" value="manual" checked />
+                    <span>🔎 Enter a location</span>
+                  </label>
+                </div>
+
+                <input
+                  id="searchLocation"
+                  name="location"
+                  type="text"
+                  placeholder="City, area, or address (e.g., Malleshwaram, Bengaluru)"
+                  maxlength="160"
+                />
+
+                <p class="recommendation-attribution">
+                  Choose your live location or enter a starting location. Merlin will search within your selected distance from it.
+                </p>
+
+                <p class="recommendation-status" id="locationStatus" role="status" aria-live="polite"></p>
+              </div>
+
               <div class="row-fields">
                 <label class="field-group">
                   <span>Your budget?</span>
@@ -201,6 +230,7 @@
                   </div>
                   <div class="budget-range-labels"><span>₹300</span><span>₹5,100</span><span>₹10,000</span></div>
                 </label>
+
                 <label class="field-group">
                   <span>Who are you going with?</span>
                   <select name="companions">
@@ -211,6 +241,7 @@
                     <option value="kids">Family with kids</option>
                   </select>
                 </label>
+
                 <label class="field-group">
                   <span>How far would you go?</span>
                   <select name="radiusKm">
@@ -222,6 +253,7 @@
                     <option value="50" selected>As far as 50 km</option>
                   </select>
                 </label>
+
                 <label class="field-group">
                   <span>Getting there</span>
                   <select name="transport">
@@ -232,6 +264,7 @@
                   </select>
                 </label>
               </div>
+
               <p class="recommendation-attribution">Merlin compares tagged fees with your INR budget. Map listings often omit current menu prices and entry fees.</p>
               <p class="recommendation-status" id="recommendationStatus" role="status" aria-live="polite"></p>
               <button type="submit" class="primary-btn wide" id="findPlacesButton">Find my places</button>
