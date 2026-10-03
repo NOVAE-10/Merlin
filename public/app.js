@@ -1308,7 +1308,7 @@ placeFinderForm?.addEventListener('submit', async (event) => {
     budgetRupees:
       budgetLevels[Number(formData.get('budgetLevel'))],
     companions: formData.get('companions'),
-    radiusKm: Number(formData.get('radiusKm')),
+      radiusKm: formData.get('radiusKm'),
     transport: formData.get('transport')
   };
 
@@ -1707,7 +1707,7 @@ function handlePlannerSubmit(event, options) {
       companions:
         plannerCompanion(formData),
       radiusKm:
-        Number(formData.get('radiusKm')),
+              formData.get('radiusKm'),
       transport:
         formData.get('transport'),
       ...(options.extraPreferences
