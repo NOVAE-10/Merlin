@@ -96,10 +96,6 @@ const localLoopResults = document.getElementById('localLoopResults');
 
 /*
  * Location controls.
- *
- * These elements are not present in the current index.html yet.
- * The code therefore checks for them safely and becomes active
- * automatically after the new location UI is added.
  */
 const locationModeInputs = () => [...document.querySelectorAll('[name="locationMode"]')];
 const locationStatus = document.getElementById('locationStatus');
@@ -138,6 +134,7 @@ tripBudgetSlider?.addEventListener('input', () => {
 
 tripBudgetInput?.addEventListener('input', () => {
   const amount = Number(tripBudgetInput.value);
+
   if (Number.isFinite(amount) && tripBudgetSlider) {
     tripBudgetSlider.value = Math.min(
       Number(tripBudgetSlider.max),
@@ -150,6 +147,7 @@ document.querySelectorAll('[data-budget-select]').forEach((select) => {
   select.innerHTML = budgetLevels.map((amount) => `
     <option value="${amount}">₹${new Intl.NumberFormat('en-IN').format(amount)} per person</option>
   `).join('');
+
   select.value = '3100';
 });
 
@@ -165,7 +163,10 @@ function setActivePage(page) {
   });
 
   document.body.classList.toggle('talk-active', page === 'talk');
-  if (pageTitle) pageTitle.textContent = pageLabelMap[page] || 'Merlin';
+
+  if (pageTitle) {
+    pageTitle.textContent = pageLabelMap[page] || 'Merlin';
+  }
 }
 
 function renderDrawerMessages() {
@@ -346,6 +347,7 @@ async function resolveLocationPreferences(preferences) {
   }
 
   const status = document.getElementById('locationStatus');
+
   if (status) {
     status.textContent = '📍 Getting your current location...';
   }
@@ -616,10 +618,6 @@ function renderFrequentPlaces() {
         );
 
         if (place) {
-          /*
-           * Fixed existing bug:
-           * the planner uses searchLocation, not startLocation.
-           */
           setActivePage('talk');
 
           const startField = document.getElementById('searchLocation');
@@ -1241,10 +1239,6 @@ async function findNearbySuggestions(preferences, options = {}) {
   }
 
   try {
-    /*
-     * Resolve live location only when the user selected
-     * "Use my live location".
-     */
     const resolvedPreferences =
       await resolveLocationPreferences(preferences);
 
@@ -1318,10 +1312,6 @@ placeFinderForm?.addEventListener('submit', async (event) => {
     transport: formData.get('transport')
   };
 
-  /*
-   * If the future location UI exists, the live/manual
-   * choice is handled by findNearbySuggestions().
-   */
   await findNearbySuggestions(preferences);
 });
 
@@ -1548,13 +1538,16 @@ document.addEventListener('click', (event) => {
 
 /* ---------------- NAVIGATION ---------------- */
 
-sideNav?.addEventListener('click', (event) => {
-  const button =
-    event.target.closest('.nav-item');
+document.querySelectorAll('.nav-item').forEach((button) => {
+  button.addEventListener('click', (event) => {
+    event.preventDefault();
 
-  if (!button) return;
+    const page = button.dataset.page;
 
-  setActivePage(button.dataset.page);
+    if (!page) return;
+
+    setActivePage(page);
+  });
 });
 
 document.querySelectorAll('[data-context-message]')
@@ -1823,10 +1816,12 @@ document.querySelectorAll('.planner-form')
       if (selectedActivities.length > 3) {
         event.target.checked = false;
 
-        form.querySelector(
-          '.recommendation-status'
-        )?.textContent =
-          'Choose up to three activities so Merlin can keep your results focused.';
+        const status = form.querySelector('.recommendation-status');
+
+        if (status) {
+          status.textContent =
+            'Choose up to three activities so Merlin can keep your results focused.';
+        }
       }
     });
   });
@@ -1969,8 +1964,7 @@ async function loadSettings() {
 
       /*
        * Do not restore live coordinates as an
-       * automatic location. Live location should
-       * be requested again when the user chooses it.
+       * automatic location.
        */
       if (
         outingSearch.locationMode === 'live'
@@ -2010,7 +2004,7 @@ async function initialize() {
   updateBudgetOutput();
   updateLocationModeUI();
 
-  setActivePage('talk');
+  setActivePage('frequent');
 }
 
 initialize();
